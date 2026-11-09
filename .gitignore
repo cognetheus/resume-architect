@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.DS_Store
+work/
+candidate-data/
+private/
+outputs/
+*.docx
+*.pdf
+*.zip

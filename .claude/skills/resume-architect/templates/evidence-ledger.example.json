@@ -1,0 +1,248 @@
+{
+  "candidate": {
+    "name": "Sample Engineer (synthetic)",
+    "headline": "Senior Backend and Platform Engineer",
+    "city": "Example City, USA",
+    "summary": "Engineering leader with experience in event-driven services, database performance, and cloud delivery. Synthetic example for validator testing only.",
+    "skills": {
+      "Backend": "Python, TypeScript, REST APIs",
+      "Cloud": "AWS, Terraform, CI/CD",
+      "Data": "PostgreSQL, Redis"
+    },
+    "education": [
+      {
+        "degree": "BS Computer Science",
+        "institution": "Example University",
+        "year": "2016"
+      }
+    ]
+  },
+  "roles": [
+    {
+      "id": "example-senior",
+      "employer": "Sample Systems (fictional)",
+      "title": "Senior Backend Engineer",
+      "start": "2021-04",
+      "end": null,
+      "employment_type": "full_time",
+      "bullets": [
+        {
+          "text": "Reduced p95 API latency from 420 ms to 280 ms through SQL execution-plan tuning.",
+          "claim_ids": [
+            "c1",
+            "m1"
+          ],
+          "metric_claim_ids": [
+            "m1"
+          ],
+          "quantified": true
+        },
+        {
+          "text": "Introduced idempotent event publishing to prevent duplicate job processing during retries.",
+          "claim_ids": [
+            "c2"
+          ],
+          "quantified": false
+        },
+        {
+          "text": "Designed modular Terraform deployment patterns with environment-isolated configuration.",
+          "claim_ids": [
+            "c3"
+          ],
+          "quantified": false
+        },
+        {
+          "text": "Improved contract reliability through integration tests for service and queue boundaries.",
+          "claim_ids": [
+            "c4"
+          ],
+          "quantified": false
+        },
+        {
+          "text": "Guided API architecture reviews and established explicit ownership of shared contracts.",
+          "claim_ids": [
+            "c5"
+          ],
+          "quantified": false
+        },
+        {
+          "text": "Redesigned data ingestion retries and reconciliation for recoverable upstream failures.",
+          "claim_ids": [
+            "c6"
+          ],
+          "quantified": false
+        }
+      ]
+    },
+    {
+      "id": "example-mid",
+      "employer": "Previous Sample Company (fictional)",
+      "title": "Software Engineer",
+      "start": "2017-01",
+      "end": "2021-03",
+      "employment_type": "full_time",
+      "bullets": [
+        {
+          "text": "Built backend REST endpoints for internal applications with SQL-backed transactions.",
+          "claim_ids": [
+            "c7"
+          ],
+          "quantified": false
+        },
+        {
+          "text": "Added server-side validation and access checks for sensitive workflows.",
+          "claim_ids": [
+            "c8"
+          ],
+          "quantified": false
+        },
+        {
+          "text": "Automated repeatable testing and deployment checks for production releases.",
+          "claim_ids": [
+            "c9"
+          ],
+          "quantified": false
+        }
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "role_id": "example-senior",
+      "kind": "implementation",
+      "status": "candidate_confirmed",
+      "statement": "Synthetic candidate-confirmed implementation 1",
+      "evidence": [
+        {
+          "type": "candidate_interview",
+          "ref": "local:synthetic-interview-not-real"
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "role_id": "example-senior",
+      "kind": "implementation",
+      "status": "candidate_confirmed",
+      "statement": "Synthetic candidate-confirmed implementation 2",
+      "evidence": [
+        {
+          "type": "candidate_interview",
+          "ref": "local:synthetic-interview-not-real"
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "role_id": "example-senior",
+      "kind": "implementation",
+      "status": "candidate_confirmed",
+      "statement": "Synthetic candidate-confirmed implementation 3",
+      "evidence": [
+        {
+          "type": "candidate_interview",
+          "ref": "local:synthetic-interview-not-real"
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "role_id": "example-senior",
+      "kind": "implementation",
+      "status": "candidate_confirmed",
+      "statement": "Synthetic candidate-confirmed implementation 4",
+      "evidence": [
+        {
+          "type": "candidate_interview",
+          "ref": "local:synthetic-interview-not-real"
+        }
+      ]
+    },
+    {
+      "id": "c5",
+      "role_id": "example-senior",
+      "kind": "implementation",
+      "status": "candidate_confirmed",
+      "statement": "Synthetic candidate-confirmed implementation 5",
+      "evidence": [
+        {
+          "type": "candidate_interview",
+          "ref": "local:synthetic-interview-not-real"
+        }
+      ]
+    },
+    {
+      "id": "c6",
+      "role_id": "example-senior",
+      "kind": "implementation",
+      "status": "candidate_confirmed",
+      "statement": "Synthetic candidate-confirmed implementation 6",
+      "evidence": [
+        {
+          "type": "candidate_interview",
+          "ref": "local:synthetic-interview-not-real"
+        }
+      ]
+    },
+    {
+      "id": "c7",
+      "role_id": "example-mid",
+      "kind": "implementation",
+      "status": "candidate_confirmed",
+      "statement": "Synthetic candidate-confirmed implementation 7",
+      "evidence": [
+        {
+          "type": "candidate_interview",
+          "ref": "local:synthetic-interview-not-real"
+        }
+      ]
+    },
+    {
+      "id": "c8",
+      "role_id": "example-mid",
+      "kind": "implementation",
+      "status": "candidate_confirmed",
+      "statement": "Synthetic candidate-confirmed implementation 8",
+      "evidence": [
+        {
+          "type": "candidate_interview",
+          "ref": "local:synthetic-interview-not-real"
+        }
+      ]
+    },
+    {
+      "id": "c9",
+      "role_id": "example-mid",
+      "kind": "implementation",
+      "status": "candidate_confirmed",
+      "statement": "Synthetic candidate-confirmed implementation 9",
+      "evidence": [
+        {
+          "type": "candidate_interview",
+          "ref": "local:synthetic-interview-not-real"
+        }
+      ]
+    },
+    {
+      "id": "m1",
+      "role_id": "example-senior",
+      "kind": "metric",
+      "status": "verified",
+      "statement": "Synthetic p95 reduction",
+      "evidence": [
+        {
+          "type": "measurement",
+          "ref": "local:synthetic-dashboard-not-real"
+        }
+      ],
+      "metric": {
+        "before": 420,
+        "after": 280,
+        "unit": "ms",
+        "period": "2026-Q1",
+        "method": "p95 from matched production-like test workload"
+      }
+    }
+  ]
+}

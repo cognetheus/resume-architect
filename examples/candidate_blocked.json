@@ -1,0 +1,39 @@
+{
+  "candidate": {
+    "name": "Blocked Example"
+  },
+  "roles": [
+    {
+      "id": "bad-role",
+      "title": "Engineer",
+      "employer": "Unverified Co",
+      "start": "2023-01",
+      "end": null,
+      "employment_type": "full_time",
+      "bullets": [
+        {
+          "text": "Achieved 65% cost reduction using undocumented AI agents.",
+          "claim_ids": [
+            "hyp1"
+          ],
+          "quantified": false
+        }
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "hyp1",
+      "kind": "implementation",
+      "role_id": "bad-role",
+      "status": "hypothesis",
+      "statement": "Public company claims AI agents existed",
+      "evidence": [
+        {
+          "type": "public_website",
+          "ref": "https://example.com"
+        }
+      ]
+    }
+  ]
+}
