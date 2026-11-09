@@ -57,7 +57,7 @@ Read `references/evidence-policy.md` before writing or approving claims.
 ### Gate D — Evidence and accuracy review
 - Classify claims as `verified` (objective evidence), `candidate_confirmed` (direct candidate confirmation), `source_reported` (original document only), `research_context`, `hypothesis` or `contradicted`.
 - For output bullets, use only `verified` or `candidate_confirmed` evidence. Avoid using `source_reported` until confirmed when it implies concrete ownership or metrics. Clearly identify residual candidate-confirmed-but-not-independently-verified claims.
-- Execute: `python scripts/evidence_gate.py path/to/candidate.json` from repository root. Do not override failing checks; correct the ledger and wording instead.
+- Execute: `python .claude/skills/resume-architect/scripts/evidence_gate.py path/to/candidate.json` from repository root (or use the installed skill directory when copied to a personal skills folder). Do not override failing checks; correct the ledger and wording instead.
 - Respect distinct roles and concurrent 1099 contracts. Treat unexplained overlap as a warning requiring validation before submission.
 
 ### Gate E — Author the resume
@@ -70,8 +70,8 @@ Read `references/evidence-policy.md` before writing or approving claims.
 
 ### Gate F — Deliver and final QA
 - Render ATS-friendly single-column DOCX and PDF when appropriate tools are available. Use semantic headings, plain-text contacts, standard bullets and consistent dates; generally target 2 pages for senior profiles but never sacrifice substance merely for the count.
-- Optionally use `python scripts/render_resume.py candidate.json output.docx` after the evidence gate. PDF conversion is optional and requires an installed converter; never claim a PDF exists until verified.
-- Run `python scripts/docx_audit.py output.docx` and visually inspect **every** page plus a plain-text PDF extraction. Look for orphan headings, broken glyphs, encoding entities, unusual whitespace, hidden tables and contact-data loss.
+- Optionally use `python .claude/skills/resume-architect/scripts/render_resume.py candidate.json output.docx` after the evidence gate. PDF conversion is optional and requires an installed converter; never claim a PDF exists until verified.
+- Run `python .claude/skills/resume-architect/scripts/docx_audit.py output.docx` and visually inspect **every** page plus a plain-text PDF extraction. Look for orphan headings, broken glyphs, encoding entities, unusual whitespace, hidden tables and contact-data loss.
 - Present a change summary, verified deliverables, outstanding verification questions, and a **clear readiness label**: Audit only, Working draft, Candidate-confirmed draft, or Submission-ready.
 - Read `references/ats-and-delivery.md` before handoff.
 

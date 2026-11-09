@@ -25,8 +25,8 @@ Python 3.10+ is sufficient for the evidence gate and unit tests:
 
 ```bash
 python -m unittest discover -s tests -v
-python scripts/evidence_gate.py examples/candidate_verified.json
-python scripts/evidence_gate.py examples/candidate_blocked.json  # expected failure
+python .claude/skills/resume-architect/scripts/evidence_gate.py examples/candidate_verified.json
+python .claude/skills/resume-architect/scripts/evidence_gate.py examples/candidate_blocked.json  # expected failure
 ```
 
 Optional rendering utilities require `pip install -r requirements.txt`. A document generator must never be used to bypass the evidence gate.
