@@ -42,3 +42,7 @@ Parse the supplied JD into hard requirements, important capabilities and bonus s
 ## Quality test
 
 Read each bullet aloud: Can an interviewer ask "why that architecture," "what broke," "how did you measure," and "what did **you** do" and receive a factual answer? If not, mark it for revision or verification.
+
+## JD tailoring
+
+When a specific JD is supplied, read `jd-tailoring.md`, use the supported/unsupported matrix, and run the conservative edit-budget validator. Rephrase only evidence-backed material; any new technology name in an experience bullet requires evidence attached to that same bullet. Never claim a higher title, metric, credential, or employer-specific project just to match the JD.

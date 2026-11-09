@@ -27,6 +27,13 @@ jobs:
             echo "ERROR: rejected fixture incorrectly passed"
             exit 1
           fi
+      - name: JD requirement coverage
+        run: python .claude/skills/resume-architect/scripts/jd_match.py examples/candidate_verified.json examples/job-description.txt --output work/jd-match.json
+      - name: Tailoring evidence and 30 percent edit-budget gate
+        run: |
+          python .claude/skills/resume-architect/scripts/tailor_gate.py \
+            examples/candidate_verified.json examples/candidate_tailored.json \
+            --jd examples/job-description.txt --target 0.20 --report work/tailoring-report.json
       - name: Render and audit DOCX
         run: |
           mkdir -p work

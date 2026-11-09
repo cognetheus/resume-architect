@@ -1,7 +1,7 @@
 ---
 name: resume-architect
 description: "Evidence-first senior engineering resume audit, ATS review, company research, engineering interview, credibility verification and resume rewriting. Use when screening technical resumes, rebuilding a CV, validating technical achievements, tailoring to a job description, or creating an ATS-friendly senior software, cloud, DevOps, data, or AI resume."
-argument-hint: "[audit|research|interview|rewrite|validate|deliver] [resume-path] [optional JD]"
+argument-hint: "[audit|research|interview|rewrite|tailor|validate|deliver] [resume-path] [--jd job-description.txt] [--target 0.20]"
 ---
 
 # Resume Architect
@@ -10,13 +10,14 @@ Treat resumes as technical claims requiring evidence, not creative-writing promp
 
 ## Invocation and scope
 
-Parse the first argument as the mode: `audit`, `research`, `interview`, `rewrite`, `validate`, or `deliver`. If omitted, infer the smallest useful stage from the request. Honor read-only/audit-only instructions. Do not rewrite files in audit mode. Use user-supplied resume and job description as sources, and explicitly identify missing artifacts.
+Parse the first argument as the mode: `audit`, `research`, `interview`, `rewrite`, `tailor`, `validate`, or `deliver`. If omitted, infer the smallest useful stage from the request. Honor read-only/audit-only instructions. Do not rewrite files in audit mode. Use user-supplied resume and job description as sources, and explicitly identify missing artifacts.
 
 **Command examples**
 - `/resume-architect audit ./input/resume.pdf`
 - `/resume-architect research ./input/resume.docx`
 - `/resume-architect interview`
-- `/resume-architect rewrite ./input/resume.pdf ./input/job-description.txt`
+- `/resume-architect rewrite ./input/resume.pdf`
+- `/resume-architect tailor ./work/candidate.json --jd ./input/job-description.txt --target 0.20`
 - `/resume-architect validate ./work/candidate.json`
 - `/resume-architect deliver ./work/candidate.json`
 
@@ -29,7 +30,8 @@ Parse the first argument as the mode: `audit`, `research`, `interview`, `rewrite
 5. **Technical seniority:** Prefer system ownership, service/data boundaries, cloud design, consistency and failure modes, production reliability, security, performance, CI/CD and mentoring scope over task inventories.
 6. **Concise writing:** Each bullet should say what was engineered, a salient approach or constraint, and a short technical result if verified. Do not append long explanations of nontechnical users' benefits.
 7. **Privacy:** Keep original resumes, interview transcripts and candidate ledgers local. Do not push them to public repos or external services without explicit authorization. Redact when demonstrating.
-8. **No fake ATS scores:** Treat scores as editorial heuristics; actual ATS ranking depends on a target role and system. Do not promise ranking, job eligibility, or fraud-proof verification.
+8. **JD tailoring:** If a JD is supplied, selectively adapt verified summary, skills, and accomplishment wording to its requirements. Measure and cap the narrative edit budget at 30%; target 10–30% but never invent content to hit a quota. Keep titles, employers, dates, metrics and evidence links unchanged.
+9. **No fake ATS scores:** Treat scores as editorial heuristics; actual ATS ranking depends on a target role and system. Do not promise ranking, job eligibility, or fraud-proof verification.
 
 Read `references/evidence-policy.md` before writing or approving claims.
 
@@ -68,6 +70,15 @@ Read `references/evidence-policy.md` before writing or approving claims.
 - Use `references/writing-and-impact.md`; validate every bullet against ledger IDs. Keep 20–30% quantified only if actual evidence permits.
 - Tailor to the JD by matching **verified experience** to responsibilities and vocabulary; never keyword-stuff skills unsupported in experience.
 
+### Optional Gate E2 — JD alignment and bounded tailoring
+- This is **opt-in**. If the user supplies no JD, execute normal rewrite/delivery unchanged. If the user provides a JD, confirm the target vacancy and read `references/jd-tailoring.md`.
+- Run `python .claude/skills/resume-architect/scripts/jd_match.py work/candidate.json input/job-description.txt --output work/jd-match.json` (relative to repository root).
+- Distinguish required/preferred JD terms, evidence-backed matches, real gaps, and unverified claims. Don't portray a keyword inventory as an ATS score.
+- Copy verified baseline ledger to a new **private** tailored JSON; never overwrite baseline. Revise 10–30% of **editable narrative wording** by default, preferring a ~20% target. Some candidates may have <10% truthful room to change: report that rather than padding.
+- Allowed: reorder sentence emphasis within a bullet, replace verified synonyms, highlight relevant proven technologies, focus the summary and skills on the JD, tighten unrelated detail. Do not alter employers, titles, dates, role count, bullet count, claim references, education, metric values, certifications, or work eligibility.
+- Validate with `python .claude/skills/resume-architect/scripts/tailor_gate.py work/candidate.json work/candidate-tailored.json --jd input/job-description.txt --target 0.20 --report work/jd-tailor-report.json`. If validation fails, correct edits; do not relax the gate to hide unsupported claims.
+- Preserve original resume and provide original-vs-tailored comparison, evidenced match gaps, change percentage, and a human review disclaimer. No promise of clearing or beating ATS.
+
 ### Gate F — Deliver and final QA
 - Render ATS-friendly single-column DOCX and PDF when appropriate tools are available. Use semantic headings, plain-text contacts, standard bullets and consistent dates; generally target 2 pages for senior profiles but never sacrifice substance merely for the count.
 - Optionally use `python .claude/skills/resume-architect/scripts/render_resume.py candidate.json output.docx` after the evidence gate. PDF conversion is optional and requires an installed converter; never claim a PDF exists until verified.
@@ -83,6 +94,7 @@ Read `references/evidence-policy.md` before writing or approving claims.
 | research | Dated employer context + cited sources + possible system hypotheses clearly separated |
 | interview | Focused questions per system and metric; evidence gaps and source requests |
 | rewrite | Coherent text draft + claim traceability + outstanding blockers |
+| tailor | Optional JD coverage report, 10–30% bounded evidence-based revisions, diff and remaining gaps |
 | validate | Pass/fail gate results + chronology/metric/bullet coverage issues |
 | deliver | Validated DOCX/PDF if supported + QA report + limitations + readiness label |
 

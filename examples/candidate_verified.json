@@ -112,7 +112,7 @@
       "role_id": "example-senior",
       "kind": "implementation",
       "status": "candidate_confirmed",
-      "statement": "Synthetic candidate-confirmed implementation 1",
+      "statement": "Optimized PostgreSQL query plans and service API latency.",
       "evidence": [
         {
           "type": "candidate_interview",
@@ -125,7 +125,7 @@
       "role_id": "example-senior",
       "kind": "implementation",
       "status": "candidate_confirmed",
-      "statement": "Synthetic candidate-confirmed implementation 2",
+      "statement": "Implemented Python event publishing and retry-safe idempotent processing.",
       "evidence": [
         {
           "type": "candidate_interview",
@@ -138,7 +138,7 @@
       "role_id": "example-senior",
       "kind": "implementation",
       "status": "candidate_confirmed",
-      "statement": "Synthetic candidate-confirmed implementation 3",
+      "statement": "Designed AWS Terraform modules for isolated infrastructure environments.",
       "evidence": [
         {
           "type": "candidate_interview",
@@ -151,7 +151,7 @@
       "role_id": "example-senior",
       "kind": "implementation",
       "status": "candidate_confirmed",
-      "statement": "Synthetic candidate-confirmed implementation 4",
+      "statement": "Implemented REST API contract and queue integration tests.",
       "evidence": [
         {
           "type": "candidate_interview",
@@ -164,7 +164,7 @@
       "role_id": "example-senior",
       "kind": "implementation",
       "status": "candidate_confirmed",
-      "statement": "Synthetic candidate-confirmed implementation 5",
+      "statement": "Owned architectural reviews and versioned REST API contracts.",
       "evidence": [
         {
           "type": "candidate_interview",
@@ -177,7 +177,7 @@
       "role_id": "example-senior",
       "kind": "implementation",
       "status": "candidate_confirmed",
-      "statement": "Synthetic candidate-confirmed implementation 6",
+      "statement": "Developed ingestion retry and reconciliation for event-driven services.",
       "evidence": [
         {
           "type": "candidate_interview",
@@ -190,7 +190,7 @@
       "role_id": "example-mid",
       "kind": "implementation",
       "status": "candidate_confirmed",
-      "statement": "Synthetic candidate-confirmed implementation 7",
+      "statement": "Built REST APIs backed by PostgreSQL transactions.",
       "evidence": [
         {
           "type": "candidate_interview",
@@ -203,7 +203,7 @@
       "role_id": "example-mid",
       "kind": "implementation",
       "status": "candidate_confirmed",
-      "statement": "Synthetic candidate-confirmed implementation 8",
+      "statement": "Implemented RBAC and validation for sensitive workflows.",
       "evidence": [
         {
           "type": "candidate_interview",
@@ -216,7 +216,7 @@
       "role_id": "example-mid",
       "kind": "implementation",
       "status": "candidate_confirmed",
-      "statement": "Synthetic candidate-confirmed implementation 9",
+      "statement": "Configured CI/CD automation for AWS application deployments.",
       "evidence": [
         {
           "type": "candidate_interview",
