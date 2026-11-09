@@ -1,0 +1,5 @@
+Required qualifications
+- Python backend development, PostgreSQL optimization, AWS and Terraform infrastructure automation.
+- REST API design and event-driven services.
+Preferred qualifications
+- Kubernetes and Kafka experience.

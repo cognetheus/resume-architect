@@ -2,7 +2,7 @@
 
 An evidence-first Claude Code skill for senior technical resume auditing, company research, engineering interviews, credibility checks, ATS-friendly writing, and deliverable QA.
 
-The project skill is at `.claude/skills/resume-architect/SKILL.md`. Claude Code loads it when you open this repository. Invoke `/resume-architect audit path/to/resume.pdf`, `/resume-architect research`, `/resume-architect interview`, `/resume-architect rewrite`, or `/resume-architect validate`.
+The project skill is at `.claude/skills/resume-architect/SKILL.md`. Claude Code loads it when you open this repository. Invoke `/resume-architect audit path/to/resume.pdf`, `/resume-architect research`, `/resume-architect interview`, `/resume-architect rewrite`, `/resume-architect tailor`, or `/resume-architect validate`.
 
 ## Why this exists
 
@@ -15,7 +15,8 @@ A senior resume should explain **systems engineered, decisions owned, difficult 
 3. Interview for real architecture, individual ownership, scale and failure modes.
 4. Record candidate-confirmed claims and measurement evidence in a local ledger.
 5. Write cohesive job bullets; aim for 5–7 for major roles and at most 30% quantified.
-6. Validate the evidence ledger, author DOCX/PDF, inspect extracted text, and perform a final hiring-manager review.
+6. Optionally tailor 10–30% of narrative wording to a supplied JD using only evidence-backed qualifications (20% default target; hard 30% cap).
+7. Validate the evidence ledger and optional JD diff, author DOCX/PDF, inspect extracted text, and perform a final hiring-manager review.
 
 See `.claude/skills/resume-architect/references/` for policy, research, interview and writing guidance.
 
@@ -30,6 +31,36 @@ python .claude/skills/resume-architect/scripts/evidence_gate.py examples/candida
 ```
 
 Optional rendering utilities require `pip install -r requirements.txt`. A document generator must never be used to bypass the evidence gate.
+
+
+## Optional JD-tailored variants (new)
+
+Supply a **plain-text or Markdown** job description. The default process still works without one. The JD mode identifies requirements supported by the candidate's verified claims, then rewrites **about 10–30% of narrative wording**, aiming for 20% by default. The 30% ceiling is enforced on the word-level edit budget; if fewer than 10% useful changes are substantiated, the tool reports that and does not pad the resume.
+
+Claude Code usage:
+
+```text
+/resume-architect tailor ./work/candidate.json --jd ./work/job-description.txt --target 0.20
+```
+
+Local validation tools (source and tailored ledgers remain private):
+
+```bash
+python .claude/skills/resume-architect/scripts/jd_match.py \
+  work/candidate.json work/job-description.txt --output work/jd-match.json
+
+python .claude/skills/resume-architect/scripts/tailor_gate.py \
+  work/candidate.json work/candidate-tailored.json \
+  --jd work/job-description.txt --target 0.20 \
+  --report work/jd-tailor-report.json
+
+python .claude/skills/resume-architect/scripts/render_resume.py \
+  work/candidate-tailored.json work/targeted-resume.docx
+```
+
+The gate protects employer names, titles, career dates, education, contact details, metric values, evidence/claim links, and bullet counts. Newly introduced technical terms must be supported by candidate-confirmed or verified claims, with role-specific evidence for work bullets. It produces a field-by-field diff and job-requirement coverage inventory.
+
+**This does not guarantee ATS acceptance or job fit.** Truthful evidence and real system-design depth take priority over keyword quotas.
 
 ## Installation
 

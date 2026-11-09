@@ -23,3 +23,12 @@
 - [ ] Contact and employment dates survive text extraction.
 - [ ] Every output file has been opened or otherwise verified.
 - [ ] User sees a readiness label and remaining validation tasks.
+
+## When a JD-tailored variant is produced
+
+- [ ] Baseline and targeted copies are separate, private files.
+- [ ] JD match report distinguishes verified coverage from unsupported gaps.
+- [ ] Word-level edit ratio is at or below 30%; target is 10–30% only when evidence allows.
+- [ ] No employment metadata, degree, contact, claim IDs, numbers, or actual architecture claims drifted.
+- [ ] Diff report and target-role evidence gaps are included.
+- [ ] Re-render both formats and repeat visual/ATS QA on the targeted version.
