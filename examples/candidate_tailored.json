@@ -3,7 +3,7 @@
     "name": "Sample Engineer (synthetic)",
     "headline": "Senior Backend and Platform Engineer",
     "city": "Example City, USA",
-    "summary": "Senior backend engineer delivering event-driven Python services, PostgreSQL performance, and reliable AWS infrastructure using Terraform. Guides architectural reviews and automated testing.",
+    "summary": "Engineering leader with experience in event-driven Python services, PostgreSQL performance, and AWS cloud delivery. Guides architecture reviews and automated testing.",
     "skills": {
       "Backend": "Python, TypeScript, REST APIs",
       "Cloud": "AWS, Terraform, CI/CD",
@@ -27,7 +27,7 @@
       "employment_type": "full_time",
       "bullets": [
         {
-          "text": "Optimized PostgreSQL query plans, reducing p95 API latency from 420 ms to 280 ms.",
+          "text": "Reduced p95 API latency from 420 ms to 280 ms through PostgreSQL query-plan tuning.",
           "claim_ids": [
             "c1",
             "m1"
@@ -38,14 +38,14 @@
           "quantified": true
         },
         {
-          "text": "Introduced idempotent publishing in Python services to prevent duplicate events during retries.",
+          "text": "Introduced idempotent event publishing in Python to prevent duplicate job processing during retries.",
           "claim_ids": [
             "c2"
           ],
           "quantified": false
         },
         {
-          "text": "Designed Terraform modules for AWS infrastructure with environment-isolated configuration.",
+          "text": "Designed modular Terraform deployment patterns for AWS with environment-isolated configuration.",
           "claim_ids": [
             "c3"
           ],
