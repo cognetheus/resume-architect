@@ -76,6 +76,124 @@ PREFERRED_HEAD = re.compile(
 )
 
 
+
+# Explicit responsibility themes complement technology keywords. Matching is
+# conservative and does not prove years, scale, management scope, or proficiency.
+# Each theme has a JD regex and a stricter candidate-claim regex.
+RESPONSIBILITY_RULES: dict[str, tuple[str, str]] = {
+    "System architecture and design": (
+        r"\bsystem\s+design\b|\b(?:software|system|solution)\s+architectur\w*\b|"
+        r"\barchitect(?:ing|ure)\b|\btechnical\s+design\b|\bservice\s+boundaries\b",
+        r"\b(?:designed|architected|owned|led|guided)\b.{0,85}"
+        r"\b(?:architectur\w*|design|service\s+boundar\w*|platform|api\s+contract\w*)\b"
+    ),
+    "Distributed and event-driven systems": (
+        r"\bdistributed\s+systems?\b|\bmicroservices?\b|\bevent[- ]driven\b|"
+        r"\basynchronous\s+processing\b|\bmessage\s+queues?\b",
+        r"\bdistributed\s+(?:systems?|services?)\b|\bmicroservices?\b|"
+        r"\bevent[- ]driven\b|\bidempotent\s+event\b|"
+        r"\b(?:asynchronous|async)\s+processing\b|\bmessage\s+queues?\b"
+    ),
+    "Reliability and production operations": (
+        r"\b(?:reliability|high\s+availability|fault\s+tolerance|incident\s+response|"
+        r"on[- ]call|SLOs?|observability|production\s+monitoring)\b",
+        r"\b(?:reliability|high\s+availability|fault\s+tolerance|incident\s+response|"
+        r"on[- ]call|SLOs?|observability|production\s+monitoring)\b"
+    ),
+    "Performance and scalability": (
+        r"\b(?:performance|latency|throughput|scalab\w*|capacity\s+planning)\b",
+        r"\b(?:performance|latency|throughput|scalab\w*|query\s+plans?|"
+        r"(?:sql|api)\s+optim\w*)\b"
+    ),
+    "Security and compliance": (
+        r"\b(?:security|secure\s+design|access\s+control|authentication|authorization|"
+        r"compliance|HIPAA|SOC\s*2|GDPR|privacy)\b",
+        r"\b(?:access\s+control|RBAC|authentication|authorization|encryption|"
+        r"audit\s+logging|HIPAA|SOC\s*2|GDPR|security\s+controls?)\b"
+    ),
+    "Technical leadership and reviews": (
+        r"\b(?:technical\s+leadership|technical\s+lead|lead\s+engineers?|"
+        r"mentoring|mentor|code\s+reviews?|architecture\s+reviews?|"
+        r"cross[- ]functional\s+leadership)\b",
+        r"\b(?:mentored|mentoring|led\s+(?:engineers?|a\s+team)|guided|"
+        r"code\s+reviews?|architecture\s+reviews?|technical\s+leadership)\b"
+    ),
+    "Data pipelines and integration": (
+        r"\b(?:data\s+pipelines?|ETL|ELT|ingest\w*|data\s+integrat\w*|"
+        r"data\s+synchroniz\w*|data\s+engineering)\b",
+        r"\b(?:data\s+pipelines?|ETL|ELT|ingest\w*|data\s+integrat\w*|"
+        r"reconciliation|data\s+synchroniz\w*)\b"
+    ),
+    "Cloud infrastructure and delivery": (
+        r"\b(?:cloud\s+(?:infrastructure|architecture|migration)|"
+        r"infrastructure\s+as\s+code|landing\s+zones?|deployment\s+automation|"
+        r"platform\s+engineering)\b",
+        r"\b(?:cloud\s+(?:infrastructure|architecture|migration|delivery)|"
+        r"terraform|infrastructure\s+as\s+code|landing\s+zones?|"
+        r"deployment\s+automation)\b"
+    ),
+    "Testing and release quality": (
+        r"\b(?:automated\s+testing|integration\s+testing|unit\s+testing|"
+        r"test\s+automation|quality\s+engineering|contract\s+testing)\b",
+        r"\b(?:integration\s+tests?|unit\s+tests?|contract\s+tests?|"
+        r"automated\s+tests?|test\s+automation|test\s+coverage)\b"
+    )
+}
+RESPONSIBILITY_PATTERNS = {
+    name: (re.compile(jd_re, re.I), re.compile(claim_re, re.I))
+    for name, (jd_re, claim_re) in RESPONSIBILITY_RULES.items()
+}
+
+
+def jd_lines(jd: str):
+    """Yield line number, text and conventional qualification priority."""
+    priority = "unspecified"
+    for lineno, raw in enumerate(jd.splitlines(), 1):
+        line = raw.strip().lstrip("#*- •\t").strip()
+        if not line:
+            continue
+        if REQUIRED_HEAD.fullmatch(line):
+            priority = "required"
+            continue
+        if PREFERRED_HEAD.fullmatch(line):
+            priority = "preferred"
+            continue
+        inline_required = bool(re.search(r"\b(?:must\s+have|required|minimum)\b", line, re.I))
+        inline_preferred = bool(re.search(r"\b(?:preferred|nice\s+to\s+have|bonus)\b", line, re.I))
+        line_priority = "required" if inline_required else "preferred" if inline_preferred else priority
+        yield lineno, line, line_priority
+
+
+def analyze_responsibilities(data: dict[str, Any], jd: str) -> list[dict[str, Any]]:
+    found: dict[str, dict[str, Any]] = {}
+    resume = resume_text(data)
+    for lineno, line, priority in jd_lines(jd):
+        for name, (jd_re, evidence_re) in RESPONSIBILITY_PATTERNS.items():
+            if not jd_re.search(line):
+                continue
+            if name not in found:
+                found[name] = {"responsibility": name, "priority": priority, "jd_lines": [lineno]}
+            else:
+                found[name]["jd_lines"].append(lineno)
+                if priority == "required":
+                    found[name]["priority"] = "required"
+    for name, row in found.items():
+        evidence_re = RESPONSIBILITY_PATTERNS[name][1]
+        ids = sorted(str(c.get("id")) for c in data.get("claims", [])
+                     if isinstance(c, dict) and c.get("id")
+                     and c.get("status") in {"verified", "candidate_confirmed"}
+                     and evidence_re.search(str(c.get("statement", ""))))
+        row["evidence_claim_ids"] = ids
+        row["in_resume"] = bool(evidence_re.search(resume))
+        row["status"] = ("supported_and_present" if ids and row["in_resume"]
+                         else "supported_not_emphasized" if ids
+                         else "unverified_or_missing")
+        row["caveat"] = "Relevant evidence only; exact role scope and years require human review."
+    return sorted(found.values(), key=lambda row: (
+        {"required": 0, "unspecified": 1, "preferred": 2}[row["priority"]],
+        row["responsibility"].casefold()
+    ))
+
 def text_terms(text: str) -> set[str]:
     return {name for name, pattern in PATTERNS.items() if pattern.search(text)}
 
@@ -105,20 +223,7 @@ def analyze(data: dict[str, Any], jd: str) -> dict[str, Any]:
     if not jd.strip():
         raise ValueError("Job description must contain text")
     found: dict[str, dict[str, Any]] = {}
-    priority = "unspecified"
-    for lineno, raw in enumerate(jd.splitlines(), 1):
-        line = raw.strip().lstrip("#*- •\t").strip()
-        if not line:
-            continue
-        if REQUIRED_HEAD.fullmatch(line):
-            priority = "required"
-            continue
-        if PREFERRED_HEAD.fullmatch(line):
-            priority = "preferred"
-            continue
-        inline_required = bool(re.search(r"\b(?:must\s+have|required|minimum)\b", line, re.I))
-        inline_preferred = bool(re.search(r"\b(?:preferred|nice\s+to\s+have|bonus)\b", line, re.I))
-        line_priority = "required" if inline_required else "preferred" if inline_preferred else priority
+    for lineno, line, line_priority in jd_lines(jd):
         for term in text_terms(line):
             if term not in found:
                 found[term] = {"skill": term, "priority": line_priority, "jd_lines": [lineno]}
@@ -138,15 +243,19 @@ def analyze(data: dict[str, Any], jd: str) -> dict[str, Any]:
         {"required": 0, "unspecified": 1, "preferred": 2}[i["priority"]],
         i["skill"].casefold()
     ))
+    responsibilities = analyze_responsibilities(data, jd)
     return {
         "disclaimer": "Heuristic requirement coverage; not an ATS score or proof of skill.",
         "requirements": reqs,
+        "responsibilities": responsibilities,
+        "responsibilities_supported": sum(bool(i["evidence_claim_ids"]) for i in responsibilities),
         "supported": sum(bool(i["evidence_claim_ids"]) for i in reqs),
         "unverified": sum(not bool(i["evidence_claim_ids"]) for i in reqs),
         "questions": [
             f"Can the candidate demonstrate {i['skill']} experience?"
             for i in reqs if not i["evidence_claim_ids"]
-        ],
+        ] + [f"Can the candidate demonstrate {i['responsibility']}?"
+             for i in responsibilities if not i["evidence_claim_ids"]],
     }
 
 
