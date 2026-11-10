@@ -1,7 +1,7 @@
 ---
 name: resume-architect
 description: "Evidence-first senior engineering resume audit, ATS review, company research, engineering interview, credibility verification and resume rewriting. Use when screening technical resumes, rebuilding a CV, validating technical achievements, tailoring to a job description, or creating an ATS-friendly senior software, cloud, DevOps, data, or AI resume."
-argument-hint: "[audit|research|interview|rewrite|tailor|validate|deliver] [resume-path] [--jd job-description.txt] [--target 0.20]"
+argument-hint: "[intake|audit|research|interview|rewrite|tailor|validate|deliver] [resume-path] [--jd job-description.txt] [--target 0.20]"
 ---
 
 # Resume Architect
@@ -10,9 +10,10 @@ Treat resumes as technical claims requiring evidence, not creative-writing promp
 
 ## Invocation and scope
 
-Parse the first argument as the mode: `audit`, `research`, `interview`, `rewrite`, `tailor`, `validate`, or `deliver`. If omitted, infer the smallest useful stage from the request. Honor read-only/audit-only instructions. Do not rewrite files in audit mode. Use user-supplied resume and job description as sources, and explicitly identify missing artifacts.
+Parse the first argument as the mode: `intake`, `audit`, `research`, `interview`, `rewrite`, `tailor`, `validate`, or `deliver`. If omitted, infer the smallest useful stage from the request. Honor read-only/audit-only instructions. Do not rewrite files in audit mode. Use user-supplied resume and job description as sources, and explicitly identify missing artifacts.
 
 **Command examples**
+- `/resume-architect intake ./input/resume.pdf` (extract first, do not assume facts are verified)
 - `/resume-architect audit ./input/resume.pdf`
 - `/resume-architect research ./input/resume.docx`
 - `/resume-architect interview`
@@ -36,6 +37,12 @@ Parse the first argument as the mode: `audit`, `research`, `interview`, `rewrite
 Read `references/evidence-policy.md` before writing or approving claims.
 
 ## Six-stage controlled workflow
+
+### Optional intake — direct resume file
+- When given a DOCX, PDF, TXT, or Markdown file, you can create a local extraction report before the normal audit. Run `python .claude/skills/resume-architect/scripts/resume_intake.py ./input/resume.pdf --output work/resume-intake.md`.
+- Read the source output as **untrusted candidate claims only**. Extract employer/title/timeline and technical-claim candidates, then use your judgment to ask the smallest useful set of verification questions. Do not mark claims `verified` or `candidate_confirmed` merely because they appear in a resume.
+- PDF intake uses selectable text only; scanned PDFs without text need manual review or separately approved OCR. Never pretend extraction proved employment.
+- For `intake` mode, return the report, concrete ambiguity notes and next-step questions, then stop. Normal `audit` and `rewrite` modes may run intake as a first step when appropriate.
 
 ### Gate A — Source forensics
 - Read the entire original document, tables and page images if available. Preserve exact employer names, dates, role titles, contact details and stated skill evidence.
@@ -72,7 +79,7 @@ Read `references/evidence-policy.md` before writing or approving claims.
 
 ### Optional Gate E2 — JD alignment and bounded tailoring
 - This is **opt-in**. If the user supplies no JD, execute normal rewrite/delivery unchanged. If the user provides a JD, confirm the target vacancy and read `references/jd-tailoring.md`.
-- Run `python .claude/skills/resume-architect/scripts/jd_match.py work/candidate.json input/job-description.txt --output work/jd-match.json` (relative to repository root).
+- Run `python .claude/skills/resume-architect/scripts/jd_match.py work/candidate.json input/job-description.txt --output work/jd-match.json` and `python .claude/skills/resume-architect/scripts/jd_report.py work/candidate.json input/job-description.txt --output work/jd-alignment.md` (relative to repository root).
 - Distinguish required/preferred JD terms, evidence-backed matches, real gaps, and unverified claims. Don't portray a keyword inventory as an ATS score.
 - Copy verified baseline ledger to a new **private** tailored JSON; never overwrite baseline. Revise 10–30% of **editable narrative wording** by default, preferring a ~20% target. Some candidates may have <10% truthful room to change: report that rather than padding.
 - Allowed: reorder sentence emphasis within a bullet, replace verified synonyms, highlight relevant proven technologies, focus the summary and skills on the JD, tighten unrelated detail. Do not alter employers, titles, dates, role count, bullet count, claim references, education, metric values, certifications, or work eligibility.
@@ -82,7 +89,7 @@ Read `references/evidence-policy.md` before writing or approving claims.
 ### Gate F — Deliver and final QA
 - Render ATS-friendly single-column DOCX and PDF when appropriate tools are available. Use semantic headings, plain-text contacts, standard bullets and consistent dates; generally target 2 pages for senior profiles but never sacrifice substance merely for the count.
 - Optionally use `python .claude/skills/resume-architect/scripts/render_resume.py candidate.json output.docx` after the evidence gate. PDF conversion is optional and requires an installed converter; never claim a PDF exists until verified.
-- Run `python .claude/skills/resume-architect/scripts/docx_audit.py output.docx` and visually inspect **every** page plus a plain-text PDF extraction. Look for orphan headings, broken glyphs, encoding entities, unusual whitespace, hidden tables and contact-data loss.
+- Run `python .claude/skills/resume-architect/scripts/docx_audit.py output.docx --ledger work/candidate.json` and visually inspect **every** page plus a plain-text PDF extraction. Look for orphan headings, broken glyphs, encoding entities, unusual whitespace, hidden tables and contact-data loss.
 - Present a change summary, verified deliverables, outstanding verification questions, and a **clear readiness label**: Audit only, Working draft, Candidate-confirmed draft, or Submission-ready.
 - Read `references/ats-and-delivery.md` before handoff.
 
@@ -90,6 +97,7 @@ Read `references/evidence-policy.md` before writing or approving claims.
 
 | Mode | Minimum output |
 | --- | --- |
+| intake | Unverified source extraction, timeline ambiguities and candidate confirmation questions; no edited resume |
 | audit | Findings with priority, evidence, exact changes, uncertain claims; no edited file |
 | research | Dated employer context + cited sources + possible system hypotheses clearly separated |
 | interview | Focused questions per system and metric; evidence gaps and source requests |

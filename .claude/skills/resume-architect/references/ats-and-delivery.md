@@ -5,7 +5,7 @@
 3. Distinguish DOCX package integrity from ATS compatibility: ZIP-valid DOCX can still have problematic reading order. A PDF can extract successfully and still have ambiguous columns.
 4. Check all dates, contact spelling, URLs, bullets, en/em dashes, ligatures, nonbreaking spaces, control characters, HTML entities (e.g. `&#x20;`), and page numbers.
 5. Prefer professionally balanced two-page layout for 10+ year engineering candidates, but retain meaningful details rather than shrinking to tiny fonts.
-6. For each generated DOCX: unzip/parse XML; inspect paragraphs, fields and tables. Run `scripts/docx_audit.py` when possible.
+6. For each generated DOCX: unzip/parse XML; inspect paragraphs, fields and tables. Run `scripts/docx_audit.py final.docx --ledger candidate.json` to check that contact details, employer/title/date lines, education and every approved bullet survived export. This is a content gate, not a visual layout or truthfulness guarantee.
 7. For each PDF: render all pages and inspect at 100%; extract text in natural order and compare header, roles, dates, metrics, education; verify no clipped lines or orphan employer headings. If a renderer is unavailable, say visual QA was not performed.
 8. Before sharing a file, verify that it actually exists and can be reopened. Do not claim "verified" on visual inspection unless done.
 9. Deliver two outputs if requested: DOCX editable and PDF submission copy. If DOCX→PDF conversion is missing, give DOCX and explain the limitation rather than inventing a PDF.
@@ -32,3 +32,7 @@
 - [ ] No employment metadata, degree, contact, claim IDs, numbers, or actual architecture claims drifted.
 - [ ] Diff report and target-role evidence gaps are included.
 - [ ] Re-render both formats and repeat visual/ATS QA on the targeted version.
+
+## Intake guidance
+
+Use `scripts/resume_intake.py` for local source extraction from DOCX/PDF/TXT/Markdown before auditing. A resume's claims remain **source-reported** until confirmed. PDF text extraction is not OCR; scanned-only PDFs should stop with an explicit error. Keep source and intake report under ignored `work/` or another private directory.
