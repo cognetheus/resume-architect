@@ -1,0 +1,9 @@
+Required qualifications
+- System design and distributed, event-driven systems.
+- Improve API performance and latency across production services.
+- Reliability, incident response, and observability for critical systems.
+- Technical leadership through mentoring and architecture reviews.
+- Secure application design and RBAC authorization.
+Preferred qualifications
+- Data ingestion pipelines and cloud infrastructure migration.
+- Integration testing and contract testing.
