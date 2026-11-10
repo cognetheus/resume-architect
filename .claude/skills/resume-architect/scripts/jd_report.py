@@ -45,6 +45,33 @@ def markdown(result: dict) -> str:
                          f"{STATUS[r['status']]} | {evidence} |")
     if not rows:
         lines.append("| — | No recognized terms | Human JD review required | — |")
+    themes = result.get("responsibilities", [])
+    lines.extend([
+        "", "## Engineering responsibilities (heuristic themes)", "",
+        "These matches indicate **relevant evidence**, not proof of experience depth,",
+        "people management, architecture ownership, or the years required by the JD.",
+        "",
+        "| JD priority | Responsibility | Resume status | Evidence claim IDs |",
+        "| --- | --- | --- | --- |",
+    ])
+    for cat in CATEGORIES:
+        for item in themes:
+            if item["priority"] != cat:
+                continue
+            ids = ", ".join(item["evidence_claim_ids"]) or "—"
+            lines.append(f"| {cat.capitalize()} | {item['responsibility']} | "
+                         f"{STATUS[item['status']]} | {ids} |")
+    if not themes:
+        lines.append("| — | No recognized themes | Review the JD manually | — |")
+    lines.extend(["", "## Required responsibilities needing confirmation", ""])
+    missing_themes = [x["responsibility"] for x in themes
+                      if x["priority"] == "required"
+                      and x["status"] == "unverified_or_missing"]
+    if missing_themes:
+        lines.extend(f"- {name}: request a real system example, dated role, and precise ownership."
+                     for name in missing_themes)
+    else:
+        lines.append("- No unsupported recognized required themes; check nuance and exact scope manually.")
     lines.extend(["", "## Required qualifications needing confirmation", ""])
     if req_missing:
         lines.extend(f"- {name}: ask for an actual, dated implementation before claiming it."
@@ -56,7 +83,8 @@ def markdown(result: dict) -> str:
         "", "## Recommendations", "",
         "- Emphasize evidence-backed requirements currently absent from resume prose.",
         "- Do not insert qualifications that have no candidate-confirmed evidence.",
-        "- Review non-keyword JD requirements manually (scope, leadership, compliance, domain).",
+        "- Confirm actual scope and level for every responsibility theme; pattern matching cannot prove seniority.",
+        "- Review unrecognized JD requirements manually (domain, people management, years, credentials).",
         "- Run the bounded tailoring gate against the original evidence ledger before exporting.",
         "",
     ])
