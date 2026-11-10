@@ -27,8 +27,19 @@ jobs:
             echo "ERROR: rejected fixture incorrectly passed"
             exit 1
           fi
+      - name: Resume intake smoke test
+        run: |
+          python .claude/skills/resume-architect/scripts/resume_intake.py \
+            examples/synthetic-resume.txt --output work/intake.md
+          grep -q "UNVERIFIED SOURCE EXTRACTION" work/intake.md
       - name: JD requirement coverage
         run: python .claude/skills/resume-architect/scripts/jd_match.py examples/candidate_verified.json examples/job-description.txt --output work/jd-match.json
+      - name: Human-readable JD evidence report
+        run: |
+          python .claude/skills/resume-architect/scripts/jd_report.py \
+            examples/candidate_verified.json examples/job-description.txt \
+            --output work/jd-alignment.md
+          grep -q "Required qualifications needing confirmation" work/jd-alignment.md
       - name: Tailoring evidence and 30 percent edit-budget gate
         run: |
           python .claude/skills/resume-architect/scripts/tailor_gate.py \
@@ -38,4 +49,4 @@ jobs:
         run: |
           mkdir -p work
           python .claude/skills/resume-architect/scripts/render_resume.py examples/candidate_verified.json work/example.docx
-          python .claude/skills/resume-architect/scripts/docx_audit.py work/example.docx
+          python .claude/skills/resume-architect/scripts/docx_audit.py work/example.docx --ledger examples/candidate_verified.json

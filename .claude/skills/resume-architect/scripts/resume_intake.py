@@ -68,11 +68,16 @@ def extract_pdf(path: Path) -> tuple[str, list[str]]:
         if len(reader.pages) > MAX_PDF_PAGES:
             raise ValueError("PDF exceeds 30-page intake limit")
         pages: list[str] = []
+        real_text_pages = 0
         for i, page in enumerate(reader.pages, 1):
             extracted = page.extract_text() or ""
             if not extracted.strip():
                 warnings.append(f"Page {i} has no extractable text (scanned/image PDF?)")
+            else:
+                real_text_pages += 1
             pages.append(f"[Page {i}]\n{extracted.strip()}")
+        if real_text_pages == 0:
+            return "", warnings
         return "\n\n".join(pages), warnings
     except (OSError, ValueError) as exc:
         raise ValueError(f"Unreadable PDF: {exc}") from exc
