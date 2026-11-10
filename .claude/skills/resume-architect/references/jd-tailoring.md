@@ -18,7 +18,7 @@ Without a JD, use the ordinary resume workflow. If a JD is supplied but no evide
 ## Step-by-step
 
 1. Run `scripts/evidence_gate.py` on the baseline. Block unsupported experience or metrics.
-2. Run `scripts/jd_match.py` to extract **heuristic** skill matches with priority, evidence claim IDs, and missing/unverified signals. Read the actual JD to also capture responsibilities not detectable by keywords (system design, high availability, mentoring, data protection, etc.).
+2. Run `scripts/jd_match.py` and `scripts/jd_report.py` to extract **heuristic** skill matches and responsibility themes (system architecture, distributed services, reliability, performance, cloud delivery, security, technical leadership, data pipelines and tests), including priority and supporting claim IDs. The tool performs phrase matching, not semantic inference. Review exact scope manually; an architecture-review claim does not prove ownership of entire architecture, and mentoring does not prove people management.
 3. Build a JD-to-claim table:
 
    | JD requirement | Priority | Claim IDs | Proven in which job? | Rewrite action |
@@ -46,7 +46,7 @@ Without a JD, use the ordinary resume workflow. If a JD is supplied but no evide
 
 ## Outputs
 
-- JD requirement matrix: supported in resume / evidence-backed but underemphasized / not verified.
+- JD requirement matrix including technical skills **and engineering responsibility themes**: supported in resume / evidence-backed but underemphasized / not verified.
 - Tailored candidate ledger and an auditable original-vs-target comparison.
 - Ratio and limitations, plus a human review checklist.
 - Resume DOCX/PDF if requested and verified.

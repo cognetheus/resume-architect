@@ -85,6 +85,34 @@ The JD report is human-readable Markdown: it highlights evidenced requirements, 
 
 **This does not guarantee ATS acceptance or job fit.** Truthful evidence and real system-design depth take priority over keyword quotas.
 
+## JD responsibility alignment and PDF layout QA
+
+The JD report now covers engineering responsibilities in addition to product/stack
+keywords: architecture and design, distributed/event-driven systems, reliability,
+performance, cloud, security, leadership, data integration, and testing. Evidence
+links are **suggestions for human review**, not proof of management scope or a
+universal ATS score.
+
+```bash
+python .claude/skills/resume-architect/scripts/jd_report.py \
+  work/candidate.json work/job-description.txt --output work/jd-alignment.md
+```
+
+After generating a PDF:
+
+```bash
+python .claude/skills/resume-architect/scripts/pdf_layout_audit.py \
+  work/targeted-resume.pdf --ledger work/candidate.json \
+  --max-pages 2 --output work/pdf-layout.json
+```
+
+Flags: likely orphaned section/role headings, unusually sparse continuation
+pages, image-only/blank pages, and page counts above the preferred maximum.
+Warnings are advisory; pass `--strict` to make warnings fail validation.
+This is text-based post-export QA, **not visual rendering**: inspect page images
+manually for clipping, fonts and spacing. No additional dependency is needed
+beyond the existing `pypdf`.
+
 ## Installation
 
 - **Project scoped:** clone the repository and open it in Claude Code; the skill is available as `/resume-architect`.
