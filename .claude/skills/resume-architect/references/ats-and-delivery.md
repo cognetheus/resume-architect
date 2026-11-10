@@ -6,7 +6,7 @@
 4. Check all dates, contact spelling, URLs, bullets, en/em dashes, ligatures, nonbreaking spaces, control characters, HTML entities (e.g. `&#x20;`), and page numbers.
 5. Prefer professionally balanced two-page layout for 10+ year engineering candidates, but retain meaningful details rather than shrinking to tiny fonts.
 6. For each generated DOCX: unzip/parse XML; inspect paragraphs, fields and tables. Run `scripts/docx_audit.py final.docx --ledger candidate.json` to check that contact details, employer/title/date lines, education and every approved bullet survived export. This is a content gate, not a visual layout or truthfulness guarantee.
-7. For each PDF: render all pages and inspect at 100%; extract text in natural order and compare header, roles, dates, metrics, education; verify no clipped lines or orphan employer headings. If a renderer is unavailable, say visual QA was not performed.
+7. For each PDF: run `scripts/pdf_layout_audit.py resume.pdf --ledger candidate.json --output work/pdf-layout.json` to flag page-count, sparse-continuation and likely orphan-heading issues in extractable text; then render **all pages** and inspect at 100%. Review clipped lines, font sizes, page balance and natural reading order separately. Text-based heuristics are not visual rendering and can produce false positives/negatives; if a renderer is unavailable, say visual QA was not performed.
 8. Before sharing a file, verify that it actually exists and can be reopened. Do not claim "verified" on visual inspection unless done.
 9. Deliver two outputs if requested: DOCX editable and PDF submission copy. If DOCX→PDF conversion is missing, give DOCX and explain the limitation rather than inventing a PDF.
 10. No universal ATS score exists. Any "score" must be labeled as an editorial heuristic and should be paired with a specific JD to discuss keyword fit.
@@ -21,6 +21,7 @@
 - [ ] Top skills match the real implementation history.
 - [ ] Page 1 establishes senior positioning and latest role.
 - [ ] Contact and employment dates survive text extraction.
+- [ ] The PDF layout report was checked, warnings reviewed and every rendered page inspected (if possible).
 - [ ] Every output file has been opened or otherwise verified.
 - [ ] User sees a readiness label and remaining validation tasks.
 

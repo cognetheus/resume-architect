@@ -40,6 +40,15 @@ jobs:
             examples/candidate_verified.json examples/job-description.txt \
             --output work/jd-alignment.md
           grep -q "Required qualifications needing confirmation" work/jd-alignment.md
+      - name: Architecture and responsibility JD coverage
+        run: |
+          python .claude/skills/resume-architect/scripts/jd_report.py \
+            examples/candidate_verified.json examples/job-description-architecture.txt \
+            --output work/jd-architecture.md
+          grep -q "Engineering responsibilities" work/jd-architecture.md
+          grep -q "Reliability and production operations" work/jd-architecture.md
+      - name: PDF layout QA command smoke test
+        run: python .claude/skills/resume-architect/scripts/pdf_layout_audit.py --help
       - name: Tailoring evidence and 30 percent edit-budget gate
         run: |
           python .claude/skills/resume-architect/scripts/tailor_gate.py \

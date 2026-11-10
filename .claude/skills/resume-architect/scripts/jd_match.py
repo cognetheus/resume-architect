@@ -113,10 +113,10 @@ RESPONSIBILITY_RULES: dict[str, tuple[str, str]] = {
     ),
     "Technical leadership and reviews": (
         r"\b(?:technical\s+leadership|technical\s+lead|lead\s+engineers?|"
-        r"mentoring|mentor|code\s+reviews?|architecture\s+reviews?|"
+        r"mentoring|mentor|code\s+reviews?|architectur(?:e|al)\s+reviews?|"
         r"cross[- ]functional\s+leadership)\b",
         r"\b(?:mentored|mentoring|led\s+(?:engineers?|a\s+team)|guided|"
-        r"code\s+reviews?|architecture\s+reviews?|technical\s+leadership)\b"
+        r"code\s+reviews?|architectur(?:e|al)\s+reviews?|technical\s+leadership)\b"
     ),
     "Data pipelines and integration": (
         r"\b(?:data\s+pipelines?|ETL|ELT|ingest\w*|data\s+integrat\w*|"

@@ -81,8 +81,8 @@ class PdfLayoutTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             path = Path(d) / "sample.pdf"
             make_pdf(path, [["Professional Summary", "Senior backend engineer",
-                             "Built reliable APIs with tested deployments."],
-                            ["Professional Experience", "Database Engineer"]])
+                             "PROFESSIONAL EXPERIENCE"],
+                            ["Database Engineer", "Built APIs with tests."]])
             report = audit_pdf(path)
             self.assertEqual(report["page_count"], 2)
             self.assertTrue(report["passed"], report["issues"])

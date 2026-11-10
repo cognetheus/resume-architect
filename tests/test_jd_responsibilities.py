@@ -48,7 +48,7 @@ class ResponsibilityTests(unittest.TestCase):
         self.assertIn("Engineering responsibilities", report)
         self.assertIn("Required responsibilities needing confirmation", report)
         self.assertIn("Reliability and production operations", report)
-        self.assertIn("Relevant evidence", report)
+        self.assertIn("relevant evidence", report)
 
 
 if __name__ == "__main__":
